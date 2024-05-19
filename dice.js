@@ -19,7 +19,20 @@ function setExponent(set, expo)
 	return cartesianMult(...Array(expo).fill(set));
 }
 
-export function Dice(faces, numOfDice)
+function splitArrayByCategories(arr, getCategory)
+{
+    let splitted = {};
+    arr.forEach(obj => {
+        let category = getCategory(obj);
+        if (splitted[category] === undefined)
+            splitted[category] = [obj];
+        else
+            splitted[category].push(obj);
+    });
+    return splitted;
+};
+
+export function Dice(faces, numOfDice, modifier = 2)
 {	
 	function modifyProbabilities(lastResult)
 	{
@@ -42,20 +55,19 @@ export function Dice(faces, numOfDice)
 	const initProb = 1 / diceResults.length;
 	
 	let probSum = 0;
-	
+	let history = [];
+
 	//note that in floating point, x + ... + x !== x * n, so prob sum must be x + ... + x
 	let results = diceResults.map((res, index) => 
 	{
 		probSum += initProb;
 		return {
+			val: res,
 			prob: initProb,
 			probSum: probSum,
-			val: res,
 			sum: res.reduce((sum, val) => sum + val)
 		};
 	});
-	let modifier = 2;
-	
 	
 	const roll = () =>
 	{
@@ -66,9 +78,25 @@ export function Dice(faces, numOfDice)
 		//const result = results[Math.floor(Math.random() * results.length)];
 		
 		modifyProbabilities(result);
-		console.log(results);
-		return result;
+		history.push(result);
+		
+		return result.val;
 	}
 	
-	return { roll };
+	const getProbabilities = (bySum) =>
+	{
+		return bySum ? 
+			Object.entries(splitArrayByCategories(results, res => res.sum)).map(([sum, resultsOfSum]) =>
+				({
+					val: sum,
+					prob: resultsOfSum.reduce((probSum, result) => probSum + result.prob, 0)
+				}))
+			: 
+			results.map(result => 
+				({
+					val: result.val,
+					prob: result.prob
+				}));
+	}
+	return { roll, getProbabilities };
 }
