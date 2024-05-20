@@ -21,7 +21,7 @@ function setExponent(set, expo)
 
 function splitArrayByCategories(arr, getCategory)
 {
-    let splitted = {};
+    const splitted = {};
     arr.forEach(obj => {
         let category = getCategory(obj);
         if (splitted[category] === undefined)
@@ -34,7 +34,7 @@ function splitArrayByCategories(arr, getCategory)
 
 export function Dice(faces, numOfDice, modifier = 2)
 {	
-	function modifyProbabilities(lastResult)
+	const modifyProbabilities = (lastResult) =>
 	{
 		const toAdd = lastResult.prob * (modifier - 1) / (modifier * (results.length - 1));
 		probSum = 0;
@@ -55,10 +55,9 @@ export function Dice(faces, numOfDice, modifier = 2)
 	const initProb = 1 / diceResults.length;
 	
 	let probSum = 0;
-	let history = [];
 
 	//note that in floating point, x + ... + x !== x * n, so prob sum must be x + ... + x
-	let results = diceResults.map((res, index) => 
+	const results = diceResults.map((res, index) => 
 	{
 		probSum += initProb;
 		return {
@@ -71,16 +70,13 @@ export function Dice(faces, numOfDice, modifier = 2)
 	
 	const roll = () =>
 	{
-		let result = results[0];
 		const rand = Math.random() * probSum;
 		result = results.find(res => rand < res.probSum);
 
 		//const result = results[Math.floor(Math.random() * results.length)];
 		
 		modifyProbabilities(result);
-		history.push(result);
-		
-		return result.val;
+		return {val: [...result.val], sum: result.sum};
 	}
 	
 	const getProbabilities = (bySum) =>
@@ -98,5 +94,6 @@ export function Dice(faces, numOfDice, modifier = 2)
 					prob: result.prob
 				}));
 	}
+	
 	return { roll, getProbabilities };
 }
