@@ -71,7 +71,7 @@ export function Dice(faces, numOfDice, modifier = 2)
 	const roll = () =>
 	{
 		const rand = Math.random() * probSum;
-		result = results.find(res => rand < res.probSum);
+		const result = results.find(res => rand < res.probSum);
 
 		//const result = results[Math.floor(Math.random() * results.length)];
 		
