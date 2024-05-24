@@ -1,4 +1,28 @@
-import { Dice } from "./dice.js";
+import * as Dice from "./dice.js";
+
+const sum = arrayToSum => arrayToSum.reduce((sum, val) => sum + val);
+
+const splitArrayByCategories = (arrayToSplit, getCategory) =>
+{
+    return arrayToSplit.reduce((splitted, obj) => {
+        let category = getCategory(obj);
+        if (splitted[category] === undefined)
+            splitted[category] = [obj];
+        else
+            splitted[category].push(obj);
+		return splitted;
+    }, {});
+};
+
+const getProbabilitiesBySum = diceResults =>
+{
+	return Object.entries(splitArrayByCategories(diceResults, res => sum(res.outcome)))
+			.map(([sum, resultsOfSum]) =>
+		({
+			outcome: sum,
+			prob: resultsOfSum.reduce((probSum, result) => probSum + result.prob, 0)
+		}));
+}
 
 document.addEventListener('DOMContentLoaded', event => {
 	const probabilityListElement = document.getElementById('probabilities');
@@ -10,12 +34,13 @@ document.addEventListener('DOMContentLoaded', event => {
 	const facesValueElement = document.getElementById('faces-value');
 	const resultElement = document.getElementById('result');
 	
-	let dice;
+	let diceResults;
 	let history;
 	let probs;
 	let numOfDice = parseInt(diceInputElement.value);
 	let faces = parseInt(facesInputElement.value);
 	let bySum = bySumCheckboxElement?.checked;
+	let modifier = 2;
 	facesValueElement.innerText = faces
 	diceValueElement.innerText = numOfDice;
 	
@@ -23,13 +48,13 @@ document.addEventListener('DOMContentLoaded', event => {
 	const addToHistory = result => {
 		history.push(result);
 		let newEntry = document.createElement('li');
-		newEntry.innerText = result.sum + ': ' + result.val;
+		newEntry.innerText = sum(result.outcome) + ': ' + result.outcome;
 		historyListElement.appendChild(newEntry);
 	};
 	
 	const initialize = () => 
 	{
-		dice = Dice(faces, numOfDice);
+		diceResults = Dice.initNewDiceResults(faces, numOfDice);
 		history = [];
 		historyListElement.textContent = '';
 		resultElement.innerText = '';
@@ -38,11 +63,11 @@ document.addEventListener('DOMContentLoaded', event => {
 	
 	const updateProbabilityList = () => 
 	{
-		probs = dice.getProbabilities(bySum);
+		probs = bySum? getProbabilitiesBySum(diceResults) : diceResults;
 		probabilityListElement.textContent = '';
 		probs.forEach(prob => {
 			let probElement = document.createElement('li');
-			probElement.innerText = prob.val + ': ' + prob.prob;
+			probElement.innerText = prob.outcome + ': ' + prob.prob;
 			probabilityListElement.appendChild(probElement);
 		});
 	};
@@ -71,8 +96,9 @@ document.addEventListener('DOMContentLoaded', event => {
 	
 	document.getElementById('roll-button')?.addEventListener('click', e => 
 	{
-		const result = dice.roll();
-		resultElement.innerText = result.sum + ': ' + result.val;
+		const result = Dice.roll(diceResults);
+		diceResults = Dice.modifyProbabilities(diceResults, result, modifier);
+		resultElement.innerText = sum(result.outcome) + ': ' + result.outcome;
 		addToHistory(result);
 		updateProbabilityList();
 	});

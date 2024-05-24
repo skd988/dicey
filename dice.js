@@ -1,99 +1,65 @@
-function cartesianMult(...sets)
+const cartesianMult = (...sets) =>
 {
-	let result = [];
-	sets.forEach(set =>
-	{
-		if (result.length === 0)
-			result = set.map(x => [x]);
-		else
-			result = result.reduce((newSet, x) => {
-				set.forEach(y => newSet.push([x,y].flat()));
-				return newSet;
-			}, []);
-	});
-	return result;
+	return sets.reduce((result, set) =>
+		result.length === 0? 
+			set.map(x => [x]) : 
+			result.map(x => set.map(y => [x, y].flat())).flat()
+	, []);
 }
 
-function setExponent(set, expo)
+const setExponent = (set, expo) => 
 {	
 	return cartesianMult(...Array(expo).fill(set));
 }
 
-function splitArrayByCategories(arr, getCategory)
+const initNewDiceResults = (faces, numOfDice) =>
 {
-    const splitted = {};
-    arr.forEach(obj => {
-        let category = getCategory(obj);
-        if (splitted[category] === undefined)
-            splitted[category] = [obj];
-        else
-            splitted[category].push(obj);
-    });
-    return splitted;
+	const oneDieResults = [...Array(faces).keys()].map(i => i + 1);
+	const diceOutcomes = setExponent(oneDieResults, numOfDice);
+	const initProb = 1 / diceOutcomes.length;
+	return diceOutcomes.reduce((diceResults, outcome, index) => 
+	{
+		diceResults.push(
+		{
+			outcome,
+			prob: initProb,
+			probSum: initProb + (index === 0? 0 : diceResults[index - 1].probSum)
+		});
+		return diceResults;
+	}
+	, []);
 };
 
-export function Dice(faces, numOfDice, modifier = 2)
-{	
-	const modifyProbabilities = (lastResult) =>
+const modifyProbabilities = (diceResults, lastResult, modifier) =>
+{
+	const toAdd = lastResult.prob * (modifier - 1) / (modifier * (diceResults.length - 1));
+	return diceResults.reduce((newDiceResults, result, index) =>
 	{
-		const toAdd = lastResult.prob * (modifier - 1) / (modifier * (results.length - 1));
-		probSum = 0;
-		results.forEach((result, index) => 
+		const newProb = result === lastResult? result.prob / modifier : result.prob + toAdd;
+		newDiceResults.push(
 		{
-			if (result === lastResult)
-				result.prob /= modifier;
-			else
-				result.prob += toAdd;
-			
-			probSum += result.prob;
-			result.probSum = probSum;
+			...result, 
+			prob: newProb,
+			probSum: newProb + (index === 0? 0 : newDiceResults[index - 1].probSum)
 		});
+		return newDiceResults;
 	}
-	
-	const oneDieResults = [...Array(faces).keys()].map(i => i + 1);
-	const diceResults = setExponent(oneDieResults, numOfDice);
-	const initProb = 1 / diceResults.length;
-	
-	let probSum = 0;
-
-	//note that in floating point, x + ... + x !== x * n, so prob sum must be x + ... + x
-	const results = diceResults.map((res, index) => 
-	{
-		probSum += initProb;
-		return {
-			val: res,
-			prob: initProb,
-			probSum: probSum,
-			sum: res.reduce((sum, val) => sum + val)
-		};
-	});
-	
-	const roll = () =>
-	{
-		const rand = Math.random() * probSum;
-		const result = results.find(res => rand < res.probSum);
-
-		//const result = results[Math.floor(Math.random() * results.length)];
-		
-		modifyProbabilities(result);
-		return {val: [...result.val], sum: result.sum};
-	}
-	
-	const getProbabilities = (bySum) =>
-	{
-		return bySum ? 
-			Object.entries(splitArrayByCategories(results, res => res.sum)).map(([sum, resultsOfSum]) =>
-				({
-					val: sum,
-					prob: resultsOfSum.reduce((probSum, result) => probSum + result.prob, 0)
-				}))
-			: 
-			results.map(result => 
-				({
-					val: result.val,
-					prob: result.prob
-				}));
-	}
-	
-	return { roll, getProbabilities };
+	, []);
 }
+
+const roll = (diceResults, rand) =>
+{
+	if (!rand)
+		rand = Math.random();
+	
+	rand *= getTotalProbSum(diceResults);
+	return diceResults.find(res => rand < res.probSum);
+}
+
+const getTotalProbSum = diceResults =>
+{
+	return diceResults[diceResults.length - 1].probSum;
+}
+
+export { initNewDiceResults, roll, modifyProbabilities };
+
