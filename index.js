@@ -45,12 +45,17 @@ document.addEventListener('DOMContentLoaded', event => {
 	diceValueElement.innerText = numOfDice;
 	
 	
-	const addToHistory = result => {
-		history.push(result);
+	const pushToHistory = result => {
+		history.push(result.outcome);
 		let newEntry = document.createElement('li');
 		newEntry.innerText = sum(result.outcome) + ': ' + result.outcome;
 		historyListElement.insertBefore(newEntry, historyListElement.firstChild);
 	};
+	
+	const popFromHistory = () => {
+		historyListElement.removeChild(historyListElement.firstElementChild);
+		return history.pop();
+	}
 	
 	const initialize = () => 
 	{
@@ -80,6 +85,8 @@ document.addEventListener('DOMContentLoaded', event => {
 			const probListItem = document.createElement('li');
 			const probResult = document.createElement('p');
 			const probValue = document.createElement('p');
+			probResult.style.display = 'inline'
+			probValue.style.display = 'inline'
 			probResult.innerText = probability.outcome + ': ';
 			probValue.innerText = probability.prob;
 			probListItem.appendChild(probResult);
@@ -114,9 +121,30 @@ document.addEventListener('DOMContentLoaded', event => {
 	document.getElementById('roll-button')?.addEventListener('click', e => 
 	{
 		const result = Dice.roll(diceResults);
-		diceResults = Dice.modifyProbabilities(diceResults, result, modifier);
+		diceResults = Dice.modifyProbabilities(diceResults, result.outcome, modifier);
 		resultElement.innerText = sum(result.outcome) + ': ' + result.outcome;
-		addToHistory(result);
+		pushToHistory(result);
 		updateProbabilityList();
+	});
+	
+	document.getElementById('reset-button')?.addEventListener('click', e => 
+	{
+		initialize();
+	});
+	
+	document.getElementById('unroll-button')?.addEventListener('click', e => 
+	{
+		if (history.length > 0)
+		{
+			diceResults = Dice.modifyProbabilities(diceResults, popFromHistory(), modifier, {cancelLastRoll: true});
+			updateProbabilityList();
+			if (history.length > 0)
+			{
+				const previousResult = history[history.length - 1];
+				resultElement.innerText = sum(previousResult) + ': ' + previousResult;				
+			}
+			else
+				resultElement.innerText = '';
+		}
 	});
 });

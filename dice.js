@@ -5,12 +5,12 @@ const cartesianMult = (...sets) =>
 			set.map(x => [x]) : 
 			result.map(x => set.map(y => [x, y].flat())).flat()
 	, []);
-}
+};
 
 const setExponent = (set, expo) => 
 {	
 	return cartesianMult(...Array(expo).fill(set));
-}
+};
 
 const initNewDiceResults = (faces, numOfDice) =>
 {
@@ -30,12 +30,17 @@ const initNewDiceResults = (faces, numOfDice) =>
 	, []);
 };
 
-const modifyProbabilities = (diceResults, lastResult, modifier) =>
+const modifyProbabilities = (diceResults, lastRollOutcome, modifier, {cancelLastRoll} = {cancelLastRoll: false}) =>
 {
-	const toAdd = lastResult.prob * (modifier - 1) / (modifier * (diceResults.length - 1));
+	let distributedValue = diceResults.find(res => res.outcome === lastRollOutcome).prob * 
+							(modifier - 1) / (modifier * (diceResults.length - 1));
+	if (cancelLastRoll)
+		distributedValue *= modifier;
 	return diceResults.reduce((newDiceResults, result, index) =>
 	{
-		const newProb = result === lastResult? result.prob / modifier : result.prob + toAdd;
+		const newProb = cancelLastRoll?
+			result.outcome === lastRollOutcome? result.prob * modifier : result.prob - distributedValue :
+			result.outcome === lastRollOutcome? result.prob / modifier : result.prob + distributedValue;
 		newDiceResults.push(
 		{
 			...result, 
@@ -43,9 +48,8 @@ const modifyProbabilities = (diceResults, lastResult, modifier) =>
 			probSum: newProb + (index === 0? 0 : newDiceResults[index - 1].probSum)
 		});
 		return newDiceResults;
-	}
-	, []);
-}
+	}, []);
+};
 
 const roll = (diceResults, rand) =>
 {
@@ -54,12 +58,12 @@ const roll = (diceResults, rand) =>
 	
 	rand *= getTotalProbSum(diceResults);
 	return diceResults.find(res => rand < res.probSum);
-}
+};
 
 const getTotalProbSum = diceResults =>
 {
 	return diceResults[diceResults.length - 1].probSum;
-}
+};
 
 export { initNewDiceResults, roll, modifyProbabilities };
 
