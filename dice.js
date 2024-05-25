@@ -66,4 +66,3 @@ const getTotalProbSum = diceResults =>
 };
 
 export { initNewDiceResults, roll, modifyProbabilities };
-
