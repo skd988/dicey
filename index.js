@@ -49,27 +49,44 @@ document.addEventListener('DOMContentLoaded', event => {
 		history.push(result);
 		let newEntry = document.createElement('li');
 		newEntry.innerText = sum(result.outcome) + ': ' + result.outcome;
-		historyListElement.appendChild(newEntry);
+		historyListElement.insertBefore(newEntry, historyListElement.firstChild);
 	};
 	
 	const initialize = () => 
 	{
 		diceResults = Dice.initNewDiceResults(faces, numOfDice);
+		newProbabilityList();
 		history = [];
 		historyListElement.textContent = '';
 		resultElement.innerText = '';
-		updateProbabilityList();
 	};
 	
 	const updateProbabilityList = () => 
 	{
-		probs = bySum? getProbabilitiesBySum(diceResults) : diceResults;
-		probabilityListElement.textContent = '';
-		probs.forEach(prob => {
-			let probElement = document.createElement('li');
-			probElement.innerText = prob.outcome + ': ' + prob.prob;
-			probabilityListElement.appendChild(probElement);
+		probabilities = bySum? getProbabilitiesBySum(diceResults) : diceResults;
+		let startTime = performance.now();
+		probabilities.forEach((probability, index) => {
+			probabilityListElement.children[index].lastElementChild.innerText = probability.prob;
 		});
+	};
+	
+	const newProbabilityList = () =>
+	{
+		probabilities = bySum? getProbabilitiesBySum(diceResults) : diceResults;
+		probabilityListElement.textContent = '';
+		const newListFrag = document.createDocumentFragment();
+		probabilities.forEach(probability => 
+		{
+			const probListItem = document.createElement('li');
+			const probResult = document.createElement('p');
+			const probValue = document.createElement('p');
+			probResult.innerText = probability.outcome + ': ';
+			probValue.innerText = probability.prob;
+			probListItem.appendChild(probResult);
+			probListItem.appendChild(probValue);
+			newListFrag.appendChild(probListItem);
+		});
+		probabilityListElement.appendChild(newListFrag);
 	};
 	
 	initialize();
@@ -77,7 +94,7 @@ document.addEventListener('DOMContentLoaded', event => {
 	bySumCheckboxElement?.addEventListener('change', e => 
 	{
 		bySum = bySumCheckboxElement?.checked;
-		updateProbabilityList();
+		newProbabilityList();
 	});
 	
 	diceInputElement?.addEventListener('change', e => 
