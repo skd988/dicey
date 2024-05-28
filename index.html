@@ -4,6 +4,7 @@
   <head>
     <meta charset="utf-8"/>
     <title>Dicey - Balance them Dice</title>
+	<link rel="stylesheet" type="text/css" href="index.css"></link>
   </head>
 
   <body>
@@ -22,11 +23,15 @@
 	<p id="modifier-value"></p>
 	<input type="range" id="modifier-input" value="2" min="1" max="20">
 
-	<h5>By sum: </h5>
-	<input type="checkbox" id="by-sum-checkbox" checked="true">
+	<h5>By sum:</h5>
+	<input type="checkbox" id="by-sum-checkbox" checked>
 	<h3>History distributions</h3>
+	<h5>Hide history:</h5>
+	<input type="checkbox" id="hide-history-checkbox">
 	<ul id="history-distribution"></ul>
 	<h3>Probabilities:</h3>
+	<h5>Hide probabilities:</h5>
+	<input type="checkbox" id="hide-probabilities-checkbox">
 	<ul id="probabilities"></ul>
 	<h3>History:</h3>
 	<ul id="history"></ul>

@@ -36,6 +36,8 @@ document.addEventListener('DOMContentLoaded', event => {
 	const historyListElement = document.getElementById('history');
 	const historyDistributionElement = document.getElementById('history-distribution');
 	const bySumCheckboxElement = document.getElementById('by-sum-checkbox');
+	const historyCheckboxElement = document.getElementById('hide-history-checkbox');
+	const probabilitiesCheckboxElement = document.getElementById('hide-probabilities-checkbox');
 	const diceInputElement = document.getElementById('dice-input');
 	const facesInputElement = document.getElementById('faces-input');
 	const modifierInputElement = document.getElementById('modifier-input');
@@ -49,10 +51,12 @@ document.addEventListener('DOMContentLoaded', event => {
 	let historyDistribution;
 	let historyDistributionBySum;
 	let probs;
-	let numOfDice = parseInt(diceInputElement.value);
-	let faces = parseInt(facesInputElement.value);
+	let numOfDice = parseInt(diceInputElement?.value);
+	let faces = parseInt(facesInputElement?.value);
 	let bySum = bySumCheckboxElement?.checked;
-	let modifier = parseInt(modifierInputElement.value);
+	let historyVisible = historyCheckboxElement?.checked;
+	let probabilitiesVisible = probabilitiesCheckboxElement?.checked;
+	let modifier = parseInt(modifierInputElement?.value);
 	facesValueElement.innerText = faces
 	diceValueElement.innerText = numOfDice;
 	modifierValueElement.innerText = modifier;
@@ -83,12 +87,19 @@ document.addEventListener('DOMContentLoaded', event => {
 	
 	const initialize = () => 
 	{
+
 		diceResults = Dice.initNewDiceResults(faces, numOfDice);
-		newProbabilityDisplay();
+		if(historyCheckboxElement.checked)
+			historyDistributionElement?.classList.add("hidden");
+		
+		if(probabilitiesCheckboxElement.checked)
+			probabilityDisplayElement?.classList.add("hidden");
+
 		history = [];
 		historyDistributionBySum = Object.fromEntries((diceResults.map(res => sum(res.outcome))).map(sum => [sum, 0]));
 		historyDistribution = Object.fromEntries(diceResults.map(res => [res.outcome, 0]));
 		newHistoryDistributionDisplay();
+		newProbabilityDisplay();
 		historyListElement.textContent = '';
 		resultElement.textContent = '';
 	};
@@ -106,7 +117,7 @@ document.addEventListener('DOMContentLoaded', event => {
 			</li>`))
 		);
 		historyDistributionElement.textContent = '';
-		historyDistributionElement.appendChild(newDisplayFrag);
+		historyDistributionElement?.appendChild(newDisplayFrag);
 	}
 	
 	const updateHistoryDistributionDisplay = () => 
@@ -161,6 +172,18 @@ document.addEventListener('DOMContentLoaded', event => {
 		bySum = bySumCheckboxElement?.checked;
 		newProbabilityDisplay();
 		newHistoryDistributionDisplay();
+	});
+	
+	historyCheckboxElement?.addEventListener('change', e => 
+	{
+		historyVisible = historyCheckboxElement?.checked;
+		historyDistributionElement?.classList.toggle("hidden");
+	});
+	
+	probabilitiesCheckboxElement?.addEventListener('change', e => 
+	{
+		probabilitiesVisible = probabilitiesCheckboxElement?.checked;
+		probabilityDisplayElement?.classList.toggle("hidden");
 	});
 	
 	diceInputElement?.addEventListener('change', e => 
