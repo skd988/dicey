@@ -24,6 +24,13 @@ const getProbabilitiesBySum = diceResults =>
 		}));
 }
 
+const createElementFromHtml = htmlString => 
+{
+	const elem = document.createElement('template');
+	elem.innerHTML = htmlString.trim();
+	return elem.content;
+}
+
 document.addEventListener('DOMContentLoaded', event => {
 	const probabilityDisplayElement = document.getElementById('probabilities');
 	const historyListElement = document.getElementById('history');
@@ -53,12 +60,15 @@ document.addEventListener('DOMContentLoaded', event => {
 	
 	const pushToHistory = result => {
 		history.push(result.outcome);
-		let newEntry = document.createElement('li');
-		newEntry.innerText = sum(result.outcome) + ': ' + result.outcome;
-		historyListElement.insertBefore(newEntry, historyListElement.firstChild);
-		
 		historyDistributionBySum[sum(result.outcome)] += 1;
 		historyDistribution[result.outcome] += 1;
+
+		historyListElement.insertBefore(createElementFromHtml(
+		`<li>
+			<p>${sum(result.outcome)}: ${result.outcome}</p>
+		</li>`), 
+		historyListElement.firstChild);
+		
 	};
 	
 	const popFromHistory = () => {
@@ -67,6 +77,7 @@ document.addEventListener('DOMContentLoaded', event => {
 		historyDistribution[lastRollOutcome] -= 1;
 
 		historyListElement.removeChild(historyListElement.firstElementChild);
+
 		return lastRollOutcome
 	}
 	
@@ -87,21 +98,13 @@ document.addEventListener('DOMContentLoaded', event => {
 		const distribution = bySum? historyDistributionBySum : historyDistribution;
 		const newDisplayFrag = document.createDocumentFragment();
 		Object.entries(distribution).forEach(([outcome, numOfRolls]) => 
-		{
-			const distributionDisplayItem = document.createElement('li');
-			const outcomeElement = document.createElement('p');
-			const numOfRollsElement = document.createElement('p');
-			const barElement = document.createElement('progress');
-			outcomeElement.style.display = 'inline'
-			numOfRollsElement.style.display = 'inline'
-			barElement.value = history.length === 0? 0 : numOfRolls / history.length;
-			outcomeElement.innerText = outcome + ': ';
-			numOfRollsElement.innerText = numOfRolls;
-			distributionDisplayItem.appendChild(outcomeElement);
-			distributionDisplayItem.appendChild(barElement);
-			distributionDisplayItem.appendChild(numOfRollsElement);
-			newDisplayFrag.appendChild(distributionDisplayItem);
-		});
+			newDisplayFrag.appendChild(createElementFromHtml(
+			`<li>
+				<p style="display: inline">${outcome}: </p>
+				<progress max=${history.length} value=${numOfRolls}></progress>
+				<p style="display: inline">${numOfRolls}</p>
+			</li>`))
+		);
 		historyDistributionElement.textContent = '';
 		historyDistributionElement.appendChild(newDisplayFrag);
 	}
@@ -110,7 +113,8 @@ document.addEventListener('DOMContentLoaded', event => {
 	{
 		const distribution = bySum? historyDistributionBySum : historyDistribution;
 		Object.entries(distribution).forEach(([outcome, numOfRolls], index) => {
-			historyDistributionElement.children[index].children[1].value = history.length === 0? 0 : numOfRolls / history.length;
+			historyDistributionElement.children[index].children[1].value = numOfRolls;
+			historyDistributionElement.children[index].children[1].max = history.length;
 			historyDistributionElement.children[index].children[2].innerText = numOfRolls;
 		});
 	};
@@ -120,21 +124,13 @@ document.addEventListener('DOMContentLoaded', event => {
 		const probabilities = bySum? getProbabilitiesBySum(diceResults) : diceResults;
 		const newDisplayFrag = document.createDocumentFragment();
 		probabilities.forEach(probability => 
-		{
-			const probDisplayItem = document.createElement('li');
-			const probResult = document.createElement('p');
-			const probValue = document.createElement('p');
-			const probBar = document.createElement('progress');
-			probResult.style.display = 'inline'
-			probValue.style.display = 'inline'
-			probBar.value = probability.prob;
-			probResult.innerText = probability.outcome + ': ';
-			probValue.innerText = probability.prob;
-			probDisplayItem.appendChild(probResult);
-			probDisplayItem.appendChild(probBar);
-			probDisplayItem.appendChild(probValue);
-			newDisplayFrag.appendChild(probDisplayItem);
-		});
+			newDisplayFrag.appendChild(createElementFromHtml(
+			`<li>
+				<p style="display: inline">${probability.outcome}: </p>
+				<progress value=${probability.prob}></progress>
+				<p style="display: inline">${probability.prob}</p>
+			</li>`))
+		);
 		probabilityDisplayElement.textContent = '';
 		probabilityDisplayElement.appendChild(newDisplayFrag);
 	};
