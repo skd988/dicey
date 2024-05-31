@@ -1,7 +1,7 @@
 const cartesianMult = (sets) =>
 {
 	return sets.reduce((result, set) =>
-		result.length === 0? 
+		!result.length? 
 			set.map(x => [x]) : 
 			result.map(x => set.map(y => [x, y].flat())).flat()
 	, []);
@@ -14,7 +14,7 @@ const setExponent = (set, expo) =>
 
 const initNewDiceResults = (faces, numOfDice) =>
 {
-	const oneDieResults = [...Array(faces).keys()].map(i => i + 1);
+	const oneDieResults = Array(faces).fill(0).map((_, i) => i + 1);
 	const diceOutcomes = setExponent(oneDieResults, numOfDice);
 	const initProb = 1 / diceOutcomes.length;
 	return diceOutcomes.reduce((diceResults, outcome, index) => 
@@ -45,17 +45,14 @@ const modifyProbabilities = (diceResults, lastRollOutcome, modifier, {cancelLast
 		{
 			...result, 
 			prob: newProb,
-			probSum: newProb + (index === 0? 0 : newDiceResults[index - 1].probSum)
+			probSum: newProb + (!index? 0 : newDiceResults[index - 1].probSum)
 		});
 		return newDiceResults;
 	}, []);
 };
 
-const roll = (diceResults, rand) =>
-{
-	if (!rand)
-		rand = Math.random();
-	
+const roll = (diceResults, rand = Math.random()) =>
+{	
 	rand *= getTotalProbSum(diceResults);
 	return diceResults.find(res => rand < res.probSum);
 };
