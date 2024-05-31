@@ -1,4 +1,4 @@
-import * as Dice from "./dice.js";
+import Dice from "./dice.js";
 
 const sum = arrayToSum => arrayToSum.reduce((sum, val) => sum + val);
 

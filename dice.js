@@ -65,4 +65,4 @@ const getTotalProbSum = diceResults =>
 	return diceResults[diceResults.length - 1].probSum;
 };
 
-export { initNewDiceResults, roll, modifyProbabilities };
+export default { initNewDiceResults, roll, modifyProbabilities };
