@@ -1,3 +1,68 @@
+.flex-container{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.inline{
+	display: inline;
+}
+
+.center-text{
+	text-align: center;	
+}
+
 .hidden{
-	visibility: hidden;
+	display: none;
+}
+
+.range-input{
+	width: 100%;
+}
+
+.parameter-value{
+	font-weight: bold;
+	font-size: 1.2rem
+}
+
+ul {
+	list-style-type: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+button{
+	border-style: solid;
+	background-color: #3830df;
+	color: white;
+	padding: 10px;
+	font-size: 1.2rem;
+	border-radius: 50%;
+	transition-duration: 0.4s;
+}
+
+button:hover{
+	background-color: #60df30;
+	cursor: pointer;
+}
+
+#result{
+	font-weight: bold;
+	font-size: 1.2rem
+}
+
+
+#menu{
+	text-align: center;
+	flex-basis: 20%;
+}
+
+#rolling{
+	text-align: center;
+	flex-basis: 50%;
+}
+
+#stats{
+	flex-basis: 30%;
 }
