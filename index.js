@@ -164,41 +164,42 @@ document.addEventListener('DOMContentLoaded', event => {
 	
 	initialize();
 	
-	bySumCheckboxElement?.addEventListener('change', e => 
+	bySumCheckboxElement?.addEventListener('input', e => 
 	{
 		bySum = bySumCheckboxElement?.checked;
 		newProbabilityDisplay();
 		newHistoryDistributionDisplay();
 	});
 	
-	historyCheckboxElement?.addEventListener('change', e => 
+	historyCheckboxElement?.addEventListener('input', e => 
 	{
 		historyVisible = historyCheckboxElement?.checked;
 		historyDistributionElement?.classList.toggle("hidden");
 	});
 	
-	probabilitiesCheckboxElement?.addEventListener('change', e => 
+	probabilitiesCheckboxElement?.addEventListener('input', e => 
 	{
 		probabilitiesVisible = probabilitiesCheckboxElement?.checked;
 		probabilityDisplayElement?.classList.toggle("hidden");
 	});
 	
-	diceInputElement?.addEventListener('change', e => 
+	diceInputElement?.addEventListener('input', e => 
 	{
 		numOfDice = parseInt(diceInputElement?.value);
 		diceValueElement.innerText = numOfDice;
 		initialize();
 	});
 	
-	facesInputElement?.addEventListener('change', e => 
+	facesInputElement?.addEventListener('input', e => 
 	{
 		faces = parseInt(facesInputElement?.value);
 		facesValueElement.innerText = faces;
 		initialize();
 	});
 	
-	modifierInputElement?.addEventListener('change', e => 
+	modifierInputElement?.addEventListener('input', e => 
 	{
+    console.log(e);  
 		modifier = parseInt(modifierInputElement?.value);
 		modifierValueElement.innerText = modifier;
 		initialize();
