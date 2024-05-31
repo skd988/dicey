@@ -2,34 +2,31 @@ import Dice from "./dice.js";
 
 const sum = arrayToSum => arrayToSum.reduce((sum, val) => sum + val);
 
-const splitArrayByCategories = (arrayToSplit, getCategory) =>
-{
-    return arrayToSplit.reduce((splitted, obj) => {
-        let category = getCategory(obj);
-        if (splitted[category] === undefined)
-            splitted[category] = [obj];
-        else
-            splitted[category].push(obj);
-		return splitted;
-    }, {});
-};
-
 const getProbabilitiesBySum = diceResults =>
 {
-	return Object.entries(splitArrayByCategories(diceResults, res => sum(res.outcome)))
+	return Object.entries(diceResults.reduce((resultsBySum, result) =>
+    {
+      const resultSum = sum(result.outcome);
+      if(!resultsBySum[resultSum])
+        resultsBySum[resultSum] = [result]
+      else
+        resultsBySum[resultSum].push(result);
+      
+      return resultsBySum;
+    }, {}))
 			.map(([sum, resultsOfSum]) =>
 		({
 			outcome: sum,
 			prob: resultsOfSum.reduce((probSum, result) => probSum + result.prob, 0)
 		}));
-}
+};
 
 const createElementFromHtml = htmlString => 
 {
 	const elem = document.createElement('template');
 	elem.innerHTML = htmlString.trim();
 	return elem.content;
-}
+};
 
 document.addEventListener('DOMContentLoaded', event => {
 	const probabilityDisplayElement = document.getElementById('probabilities');
