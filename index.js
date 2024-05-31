@@ -160,8 +160,25 @@ document.addEventListener('DOMContentLoaded', event => {
 		pushToHistory(result);
 		updateProbabilityDisplay();
 		updateHistoryDistributionDisplay();		
-	}
+	};
 	
+	const unroll = () =>
+	{
+		if (history.length)
+		{
+			diceResults = Dice.modifyProbabilities(diceResults, popFromHistory(), modifier, {cancelLastRoll: true});
+			updateProbabilityDisplay();
+			updateHistoryDistributionDisplay();
+			if (history.length > 0)
+			{
+				const previousResult = history[history.length - 1];
+				resultElement.innerText = sum(previousResult) + ': ' + previousResult;				
+			}
+			else
+				resultElement.innerText = '';
+		}
+	};
+
 	initialize();
 	
 	bySumCheckboxElement?.addEventListener('input', e => 
@@ -199,7 +216,6 @@ document.addEventListener('DOMContentLoaded', event => {
 	
 	modifierInputElement?.addEventListener('input', e => 
 	{
-    console.log(e);  
 		modifier = parseInt(modifierInputElement?.value);
 		modifierValueElement.innerText = modifier;
 		initialize();
@@ -209,11 +225,16 @@ document.addEventListener('DOMContentLoaded', event => {
 	
 	document.addEventListener('keydown', e => 
 	{
-		if (e.keyCode === 32 || e.keyCode === 13)
+		console.log(e.key);
+		if (e.key === ' ' || e.key === '\n')
 		{
 			e.preventDefault();
 			roll();
 		}
+		else if (e.key === 'u')
+			unroll();
+		else if (e.key === 'r')
+			initialize();
 	});
 	
 	document.getElementById('reset-button')?.addEventListener('click', e => 
@@ -221,20 +242,5 @@ document.addEventListener('DOMContentLoaded', event => {
 		initialize();
 	});
 	
-	document.getElementById('unroll-button')?.addEventListener('click', e => 
-	{
-		if (history.length > 0)
-		{
-			diceResults = Dice.modifyProbabilities(diceResults, popFromHistory(), modifier, {cancelLastRoll: true});
-			updateProbabilityDisplay();
-			updateHistoryDistributionDisplay();
-			if (history.length > 0)
-			{
-				const previousResult = history[history.length - 1];
-				resultElement.innerText = sum(previousResult) + ': ' + previousResult;				
-			}
-			else
-				resultElement.innerText = '';
-		}
-	});
+	document.getElementById('unroll-button')?.addEventListener('click', unroll);
 });
