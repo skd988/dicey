@@ -1,4 +1,4 @@
-const cartesianMult = (...sets) =>
+const cartesianMult = (sets) =>
 {
 	return sets.reduce((result, set) =>
 		result.length === 0? 
@@ -9,7 +9,7 @@ const cartesianMult = (...sets) =>
 
 const setExponent = (set, expo) => 
 {	
-	return cartesianMult(...Array(expo).fill(set));
+	return cartesianMult(Array(expo).fill(set));
 };
 
 const initNewDiceResults = (faces, numOfDice) =>
