@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', event => {
 	let bySum = bySumCheckboxElement?.checked;
 	let historyVisible = historyCheckboxElement?.checked;
 	let probabilitiesVisible = probabilitiesCheckboxElement?.checked;
-	let modifier = parseInt(modifierInputElement?.value);
+	let modifier = parseFloat(modifierInputElement?.value);
 	facesValueElement.innerText = faces
 	diceValueElement.innerText = numOfDice;
 	modifierValueElement.innerText = modifier;
@@ -108,9 +108,9 @@ document.addEventListener('DOMContentLoaded', event => {
 		Object.entries(distribution).forEach(([outcome, numOfRolls]) => 
 			newDisplayFrag.appendChild(createElementFromHtml(
 			`<li>
-				<p style="display: inline">${outcome}: </p>
+				<p class="inline">${outcome}: </p>
 				<progress max=${history.length} value=${numOfRolls}></progress>
-				<p style="display: inline">${numOfRolls}</p>
+				<p class="inline">${numOfRolls}</p>
 			</li>`))
 		);
 		historyDistributionElement.textContent = '';
@@ -134,9 +134,9 @@ document.addEventListener('DOMContentLoaded', event => {
 		probabilities.forEach(probability => 
 			newDisplayFrag.appendChild(createElementFromHtml(
 			`<li>
-				<p style="display: inline">${probability.outcome}: </p>
+				<p class="inline">${probability.outcome}: </p>
 				<progress value=${probability.prob}></progress>
-				<p style="display: inline">${probability.prob}</p>
+				<p class="inline">${probability.prob}</p>
 			</li>`))
 		);
 		probabilityDisplayElement.textContent = '';
@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', event => {
 		resultElement.innerText = sum(result.outcome) + ': ' + result.outcome;
 		pushToHistory(result);
 		updateProbabilityDisplay();
-		updateHistoryDistributionDisplay();		
+		updateHistoryDistributionDisplay();	
 	};
 	
 	const unroll = () =>
@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', event => {
 	
 	modifierInputElement?.addEventListener('input', e => 
 	{
-		modifier = parseInt(modifierInputElement?.value);
+		modifier = parseFloat(modifierInputElement?.value);
 		modifierValueElement.innerText = modifier;
 		initialize();
 	});
@@ -225,7 +225,6 @@ document.addEventListener('DOMContentLoaded', event => {
 	
 	document.addEventListener('keydown', e => 
 	{
-		console.log(e.key);
 		if (e.key === ' ' || e.key === '\n')
 		{
 			e.preventDefault();
