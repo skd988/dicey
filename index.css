@@ -66,3 +66,30 @@ button:hover{
 #stats{
 	flex-basis: 30%;
 }
+
+
+/* nik's css, converted from his scss*/
+.die {
+	 height: 40px;
+	 width: 40px;
+	 margin: 3px;
+}
+
+.die rect {
+	 stroke-width: 4px;
+   fill: white;
+	 stroke: black;
+}
+
+#result{
+  position: absolute;
+  height: 100px;
+  top: calc(50% - 50px);
+  width: 100px;
+  left: calc(47.33% - 50px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: row;
+}

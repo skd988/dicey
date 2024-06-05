@@ -28,6 +28,57 @@ const createElementFromHtml = htmlString =>
 	return elem.content;
 };
 
+const diceDisplay = (result) => {
+  return result.outcome.map(die => console.log(die)|| 
+    createElementFromHtml(`
+      <svg viewBox="0 0 100 100" class="die">
+        <rect x={0} y={0} height={100} width={100} rx={12}></rect>
+      `
+      +  
+      (die === 1 ? 
+        `<circle cx="50" cy="50" r="10" />`
+      : die === 2 ? 
+        `<g>
+          <circle cx="33" cy="33" r="10" />
+          <circle cx="67" cy="67" r="10" />
+        </g>`
+      : die === 3 ? 
+        `<g>
+          <circle cx="33" cy="33" r="10" />
+          <circle cx="50" cy="50" r="10" />
+          <circle cx="67" cy="67" r="10" />
+        </g>`
+      : die === 4 ? 
+        `<g>
+          <circle cx="33" cy="33" r="10" />
+          <circle cx="33" cy="67" r="10" />
+          <circle cx="67" cy="33" r="10" />
+          <circle cx="67" cy="67" r="10" />
+        </g>`
+      : die === 5 ? 
+        `<g>
+          <circle cx="33" cy="33" r="10" />
+          <circle cx="33" cy="67" r="10" />
+          <circle cx="67" cy="33" r="10" />
+          <circle cx="50" cy="50" r="10" />
+          <circle cx="67" cy="67" r="10" />
+        </g>`
+      : die === 6 ? 
+        `<g>
+          <circle cx="33" cy="33" r="10" />
+          <circle cx="33" cy="50" r="10" />
+          <circle cx="33" cy="67" r="10" />
+          <circle cx="67" cy="33" r="10" />
+          <circle cx="67" cy="50" r="10" />
+          <circle cx="67" cy="67" r="10" />
+        </g>`
+       : `<text x="50" y="50">${die}<text>`)
+      +
+      `</svg>`
+    )
+  )
+};
+  
 document.addEventListener('DOMContentLoaded', event => {
 	const probabilityDisplayElement = document.getElementById('probabilities');
 	const historyListElement = document.getElementById('history');
@@ -172,9 +223,13 @@ document.addEventListener('DOMContentLoaded', event => {
 	const roll = () =>
 	{
 		const result = Dice.roll(diceResults);
-		diceResults = Dice.modifyProbabilities(diceResults, result.outcome, modifier);
-		resultElement.innerText = sum(result.outcome) + ': ' + result.outcome;
-		pushToHistory(result);
+    resultElement.textContent = '';
+		diceDisplay(result).forEach(die =>
+      resultElement.appendChild(die));
+
+    Dice.modifyProbabilities(diceResults, result.outcome, modifier);
+		//resultElement.innerText = sum(result.outcome) + ': ' + result.outcome;
+    pushToHistory(result);
 		updateProbabilityDisplay();
 		updateHistoryDistributionDisplay();	
 	};
