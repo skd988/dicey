@@ -114,15 +114,16 @@ document.addEventListener('DOMContentLoaded', event => {
 			newDisplayStats.innerHTML +=
 			`<li>
 				<p class="inline">${outcome}: </p>
-				<p class="inline">${numOfRolls}</p>
+				<p class="inline"></p>
 			</li>`;
 			newDisplayBar.innerHTML +=
 			`<li>
-				<progress max=${history.length} value=${numOfRolls}></progress>
+				<progress></progress>
 			</li>`;
 		});
 		historyDistributionElement.children[0].innerHTML = newDisplayStats.innerHTML;
 		historyDistributionElement.children[1].innerHTML = newDisplayBar.innerHTML;
+		updateHistoryDistributionDisplay();
 	}
 	
 	const updateHistoryDistributionDisplay = () => 
@@ -147,22 +148,23 @@ document.addEventListener('DOMContentLoaded', event => {
 			newStatsDisplay.innerHTML += 
 			`<li>
 				<p class="inline">${probability.outcome}: </p>
-				<p class="inline">${probability.prob}</p>
+				<p class="inline">$</p>
 			</li>`;
 			newBarDisplay.innerHTML += 
 			`<li>
-				<progress value=${probability.prob}></progress>
+				<progress></progress>
 			</li>`;
 		});
 		probabilityDisplayElement.children[0].innerHTML = newStatsDisplay.innerHTML;
 		probabilityDisplayElement.children[1].innerHTML = newBarDisplay.innerHTML;
+		updateProbabilityDisplay();
 	};
 	
 	const updateProbabilityDisplay = () => 
 	{
 		const probabilities = bySum? getProbabilitiesBySum(diceResults) : diceResults;
 		probabilities.forEach((probability, index) => {
-			probabilityDisplayElement.children[0].children[index].children[1].innerText = probability.prob;
+			probabilityDisplayElement.children[0].children[index].children[1].innerText = probability.prob.toFixed(3);
 			probabilityDisplayElement.children[1].children[index].children[0].value = probability.prob;
 		});
 	};
