@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', event => {
 	const facesValueElement = document.getElementById('faces-value');
 	const modifierValueElement = document.getElementById('modifier-value');
 	const resultElement = document.getElementById('result');
+	const numOfRollsElement = document.getElementById('num-of-rolls');
 	
 	let diceResults;
 	let history;
@@ -61,6 +62,7 @@ document.addEventListener('DOMContentLoaded', event => {
 	
 	const pushToHistory = result => {
 		history.push(result.outcome);
+		numOfRollsElement.textContent = history.length;
 		historyDistributionBySum[sum(result.outcome)] += 1;
 		historyDistribution[result.outcome] += 1;
 
@@ -69,11 +71,11 @@ document.addEventListener('DOMContentLoaded', event => {
 			<p>${sum(result.outcome)}: ${result.outcome}</p>
 		</li>`), 
 		historyListElement.firstChild);
-		
 	};
 	
 	const popFromHistory = () => {
 		const lastRollOutcome = history.pop();
+		numOfRollsElement.textContent = history.length;
 		historyDistributionBySum[sum(lastRollOutcome)] -= 1;
 		historyDistribution[lastRollOutcome] -= 1;
 
@@ -99,6 +101,7 @@ document.addEventListener('DOMContentLoaded', event => {
 		newProbabilityDisplay();
 		historyListElement.textContent = '';
 		resultElement.textContent = '';
+		numOfRollsElement.textContent = 0;
 	};
 
 	const newHistoryDistributionDisplay = () =>
