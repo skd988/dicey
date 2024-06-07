@@ -31,47 +31,47 @@ const createElementFromHtml = htmlString =>
 const diceDisplay = (result) => {
 	return result.map(die => createElementFromHtml(
 		`<svg viewBox="0 0 100 100" class="die">
-		<rect x={0} y={0} height={100} width={100} rx={12}></rect>`
-		+
-		(die === 1 ?
-			`<circle cx="50" cy="50" r="10" />`
-		: die === 2 ?
-		`<g>
-			<circle cx="33" cy="33" r="10" />
-			<circle cx="67" cy="67" r="10" />
-		</g>`
-		: die === 3 ?
-		`<g>
-			<circle cx="33" cy="33" r="10" />
-			<circle cx="50" cy="50" r="10" />
-			<circle cx="67" cy="67" r="10" />
-		</g>`
-		: die === 4 ?
-		`<g>
-			<circle cx="33" cy="33" r="10" />
-			<circle cx="33" cy="67" r="10" />
-			<circle cx="67" cy="33" r="10" />
-			<circle cx="67" cy="67" r="10" />
-		</g>`
-		: die === 5 ?
-		`<g>
-			<circle cx="33" cy="33" r="10" />
-			<circle cx="33" cy="67" r="10" />
-			<circle cx="67" cy="33" r="10" />
-			<circle cx="50" cy="50" r="10" />
-			<circle cx="67" cy="67" r="10" />
-		</g>`
-		: die === 6 ?
-		`<g>
-			<circle cx="33" cy="33" r="10" />
-			<circle cx="33" cy="50" r="10" />
-			<circle cx="33" cy="67" r="10" />
-			<circle cx="67" cy="33" r="10" />
-			<circle cx="67" cy="50" r="10" />
-			<circle cx="67" cy="67" r="10" />
-		</g>`
-		: `<text x="50" y="50">${die}<text>`)
-		+
+			<rect x="10" y="10" height="80" width="80" rx={12}></rect>`
+			+
+			(die === 1 ?
+				`<circle cx="50" cy="50" r="7" />`
+			: die === 2 ?
+			`<g>
+				<circle cx="33" cy="33" r="7" />
+				<circle cx="67" cy="67" r="7" />
+			</g>`
+			: die === 3 ?
+			`<g>
+				<circle cx="33" cy="33" r="7" />
+				<circle cx="50" cy="50" r="7" />
+				<circle cx="67" cy="67" r="7" />
+			</g>`
+			: die === 4 ?
+			`<g>
+				<circle cx="33" cy="33" r="7" />
+				<circle cx="33" cy="67" r="7" />
+				<circle cx="67" cy="33" r="7" />
+				<circle cx="67" cy="67" r="7" />
+			</g>`
+			: die === 5 ?
+			`<g>
+				<circle cx="33" cy="33" r="7" />
+				<circle cx="33" cy="67" r="7" />
+				<circle cx="67" cy="33" r="7" />
+				<circle cx="50" cy="50" r="7" />
+				<circle cx="67" cy="67" r="7" />
+			</g>`
+			: die === 6 ?
+			`<g>
+				<circle cx="33" cy="33" r="7" />
+				<circle cx="33" cy="50" r="7" />
+				<circle cx="33" cy="67" r="7" />
+				<circle cx="67" cy="33" r="7" />
+				<circle cx="67" cy="50" r="7" />
+				<circle cx="67" cy="67" r="7" />
+			</g>`
+			: `<text x="50" y="50">${die}<text>`)
+			+
 		`</svg>`
 	)
   );
