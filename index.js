@@ -29,7 +29,7 @@ const createElementFromHtml = htmlString =>
 };
 
 const diceDisplay = (result) => {
-	return result.outcome.map(die => createElementFromHtml(
+	return result.map(die => createElementFromHtml(
 		`<svg viewBox="0 0 100 100" class="die">
 		<rect x={0} y={0} height={100} width={100} rx={12}></rect>`
 		+
@@ -81,6 +81,7 @@ document.addEventListener('DOMContentLoaded', event => {
 	const probabilityDisplayElement = document.getElementById('probabilities');
 	const historyListElement = document.getElementById('history');
 	const historyDistributionElement = document.getElementById('history-distribution');
+	const resultDisplayByDiceCheckboxElement = document.getElementById('display-by-dice');
 	const bySumCheckboxElement = document.getElementById('by-sum-checkbox');
 	const historyCheckboxElement = document.getElementById('hide-history-checkbox');
 	const probabilitiesCheckboxElement = document.getElementById('hide-probabilities-checkbox');
@@ -103,6 +104,7 @@ document.addEventListener('DOMContentLoaded', event => {
 	let bySum = bySumCheckboxElement?.checked;
 	let historyVisible = historyCheckboxElement?.checked;
 	let probabilitiesVisible = probabilitiesCheckboxElement?.checked;
+	let displayByDice = resultDisplayByDiceCheckboxElement?.checked;
 	let modifier = parseFloat(modifierInputElement?.value);
 	facesValueElement.innerText = faces
 	diceValueElement.innerText = numOfDice;
@@ -116,10 +118,10 @@ document.addEventListener('DOMContentLoaded', event => {
 		historyDistribution[result.outcome] += 1;
 
 		historyListElement.insertBefore(createElementFromHtml(
-		`<li>
-			<p>${sum(result.outcome)}: ${result.outcome}</p>
-		</li>`), 
-		historyListElement.firstChild);
+			`<li>
+				<p>${sum(result.outcome)}: ${result.outcome}</p>
+			</li>`), 
+			historyListElement.firstChild);
 	};
 	
 	const popFromHistory = () => {
@@ -135,7 +137,6 @@ document.addEventListener('DOMContentLoaded', event => {
 	
 	const initialize = () => 
 	{
-
 		diceResults = Dice.initNewDiceResults(faces, numOfDice);
 		if(historyCheckboxElement.checked)
 			historyDistributionElement?.classList.add("hidden");
@@ -221,15 +222,27 @@ document.addEventListener('DOMContentLoaded', event => {
 	const roll = () =>
 	{
 		const result = Dice.roll(diceResults);
-		resultElement.textContent = '';
-		diceDisplay(result).forEach(die => 
-			resultElement.appendChild(die));
-
-		Dice.modifyProbabilities(diceResults, result.outcome, modifier);
-		//resultElement.innerText = sum(result.outcome) + ': ' + result.outcome;
 		pushToHistory(result);
+		Dice.modifyProbabilities(diceResults, result.outcome, modifier);
+		displayLastResult();
 		updateProbabilityDisplay();
 		updateHistoryDistributionDisplay();	
+	};
+	
+	const displayLastResult = () => 
+	{
+		const result = history[history.length - 1];
+		resultElement.textContent = '';
+		if (displayByDice)
+		{
+			diceDisplay(result).forEach(die => 
+				resultElement.appendChild(die));
+		}
+		else
+			resultElement.appendChild(createElementFromHtml(
+			`<p>
+				${sum(result)}: ${result}
+			</p>`));
 	};
 	
 	const unroll = () =>
@@ -240,12 +253,9 @@ document.addEventListener('DOMContentLoaded', event => {
 			updateProbabilityDisplay();
 			updateHistoryDistributionDisplay();
 			if (history.length > 0)
-			{
-				const previousResult = history[history.length - 1];
-				resultElement.innerText = sum(previousResult) + ': ' + previousResult;				
-			}
+				displayLastResult();
 			else
-				resultElement.innerText = '';
+				resultElement.textContent = '';
 		}
 	};
 
@@ -268,6 +278,12 @@ document.addEventListener('DOMContentLoaded', event => {
 	{
 		probabilitiesVisible = probabilitiesCheckboxElement?.checked;
 		probabilityDisplayElement?.classList.toggle("hidden");
+	});
+		
+	resultDisplayByDiceCheckboxElement?.addEventListener('input', e => 
+	{
+		displayByDice = resultDisplayByDiceCheckboxElement?.checked;
+		displayLastResult();
 	});
 	
 	diceInputElement?.addEventListener('input', e => 
