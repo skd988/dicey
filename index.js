@@ -31,7 +31,7 @@ const createElementFromHtml = htmlString =>
 const diceDisplay = (result) => {
 	return result.map(die => createElementFromHtml(
 		`<svg viewBox="0 0 100 100" class="die">
-			<rect x="10" y="10" height="80" width="80" rx={12}></rect>`
+			<rect x="15" y="15" height="70" width="70" rx="12"></rect>`
 			+
 			(die === 1 ?
 				`<circle cx="50" cy="50" r="7" />`
@@ -57,8 +57,8 @@ const diceDisplay = (result) => {
 			`<g>
 				<circle cx="33" cy="33" r="7" />
 				<circle cx="33" cy="67" r="7" />
-				<circle cx="67" cy="33" r="7" />
 				<circle cx="50" cy="50" r="7" />
+				<circle cx="67" cy="33" r="7" />
 				<circle cx="67" cy="67" r="7" />
 			</g>`
 			: die === 6 ?
@@ -70,7 +70,238 @@ const diceDisplay = (result) => {
 				<circle cx="67" cy="50" r="7" />
 				<circle cx="67" cy="67" r="7" />
 			</g>`
-			: `<text x="50" y="50">${die}<text>`)
+			: die === 7 ?
+			`<g>
+				<circle cx="33" cy="33" r="7" />
+				<circle cx="33" cy="50" r="7" />
+				<circle cx="33" cy="67" r="7" />
+				<circle cx="50" cy="50" r="7" />
+				<circle cx="67" cy="33" r="7" />
+				<circle cx="67" cy="50" r="7" />
+				<circle cx="67" cy="67" r="7" />
+			</g>`
+			: die === 8 ?
+			`<g>
+				<circle cx="33" cy="33" r="7" />
+				<circle cx="33" cy="50" r="7" />
+				<circle cx="33" cy="67" r="7" />
+				<circle cx="50" cy="33" r="7" />
+				<circle cx="50" cy="67" r="7" />
+				<circle cx="67" cy="33" r="7" />
+				<circle cx="67" cy="50" r="7" />
+				<circle cx="67" cy="67" r="7" />
+			</g>`
+			: die === 9 ?
+			`<g>
+				<circle cx="33" cy="33" r="7" />
+				<circle cx="33" cy="50" r="7" />
+				<circle cx="33" cy="67" r="7" />
+				<circle cx="50" cy="33" r="7" />
+				<circle cx="50" cy="50" r="7" />
+				<circle cx="50" cy="67" r="7" />
+				<circle cx="67" cy="33" r="7" />
+				<circle cx="67" cy="50" r="7" />
+				<circle cx="67" cy="67" r="7" />
+			</g>`
+			: die === 10 ?
+			`<g>
+				<circle cx="25" cy="25" r="5" />
+				<circle cx="25" cy="37" r="5" />
+				<circle cx="25" cy="50" r="5" />
+				<circle cx="25" cy="62" r="5" />
+				<circle cx="25" cy="75" r="5" />
+				<circle cx="75" cy="25" r="5" />
+				<circle cx="75" cy="37" r="5" />
+				<circle cx="75" cy="50" r="5" />
+				<circle cx="75" cy="62" r="5" />
+				<circle cx="75" cy="75" r="5" />
+			</g>`
+			: die === 11 ?
+			`<g>
+				<circle cx="25" cy="25" r="5" />
+				<circle cx="25" cy="37" r="5" />
+				<circle cx="25" cy="50" r="5" />
+				<circle cx="25" cy="62" r="5" />
+				<circle cx="25" cy="75" r="5" />
+				<circle cx="50" cy="50" r="5" />
+				<circle cx="75" cy="25" r="5" />
+				<circle cx="75" cy="37" r="5" />
+				<circle cx="75" cy="50" r="5" />
+				<circle cx="75" cy="62" r="5" />
+				<circle cx="75" cy="75" r="5" />
+			</g>`
+			: die === 12 ?
+			`<g>
+				<circle cx="25" cy="25" r="5" />
+				<circle cx="25" cy="37" r="5" />
+				<circle cx="25" cy="50" r="5" />
+				<circle cx="25" cy="62" r="5" />
+				<circle cx="25" cy="75" r="5" />
+				<circle cx="37" cy="37" r="5" />
+				<circle cx="62" cy="62" r="5" />
+				<circle cx="75" cy="25" r="5" />
+				<circle cx="75" cy="37" r="5" />
+				<circle cx="75" cy="50" r="5" />
+				<circle cx="75" cy="62" r="5" />
+				<circle cx="75" cy="75" r="5" />
+			</g>`
+			: die === 13 ?
+			`<g>
+				<circle cx="25" cy="25" r="5" />
+				<circle cx="25" cy="37" r="5" />
+				<circle cx="25" cy="50" r="5" />
+				<circle cx="25" cy="62" r="5" />
+				<circle cx="25" cy="75" r="5" />
+				<circle cx="37" cy="37" r="5" />
+				<circle cx="50" cy="50" r="5" />
+				<circle cx="62" cy="62" r="5" />
+				<circle cx="75" cy="25" r="5" />
+				<circle cx="75" cy="37" r="5" />
+				<circle cx="75" cy="50" r="5" />
+				<circle cx="75" cy="62" r="5" />
+				<circle cx="75" cy="75" r="5" />
+			</g>`
+			: die === 14 ?
+			`<g>
+				<circle cx="25" cy="25" r="5" />
+				<circle cx="25" cy="37" r="5" />
+				<circle cx="25" cy="50" r="5" />
+				<circle cx="25" cy="62" r="5" />
+				<circle cx="25" cy="75" r="5" />
+				<circle cx="37" cy="37" r="5" />
+				<circle cx="37" cy="62" r="5" />
+				<circle cx="62" cy="37" r="5" />
+				<circle cx="62" cy="62" r="5" />
+				<circle cx="75" cy="25" r="5" />
+				<circle cx="75" cy="37" r="5" />
+				<circle cx="75" cy="50" r="5" />
+				<circle cx="75" cy="62" r="5" />
+				<circle cx="75" cy="75" r="5" />
+			</g>`
+			: die === 15 ?
+			`<g>
+				<circle cx="25" cy="25" r="5" />
+				<circle cx="25" cy="37" r="5" />
+				<circle cx="25" cy="50" r="5" />
+				<circle cx="25" cy="62" r="5" />
+				<circle cx="25" cy="75" r="5" />
+				<circle cx="37" cy="37" r="5" />
+				<circle cx="37" cy="62" r="5" />
+				<circle cx="50" cy="50" r="5" />
+				<circle cx="62" cy="37" r="5" />
+				<circle cx="62" cy="62" r="5" />
+				<circle cx="75" cy="25" r="5" />
+				<circle cx="75" cy="37" r="5" />
+				<circle cx="75" cy="50" r="5" />
+				<circle cx="75" cy="62" r="5" />
+				<circle cx="75" cy="75" r="5" />
+			</g>`
+			: die === 16 ?
+			`<g>
+				<circle cx="25" cy="25" r="5" />
+				<circle cx="25" cy="37" r="5" />
+				<circle cx="25" cy="50" r="5" />
+				<circle cx="25" cy="62" r="5" />
+				<circle cx="25" cy="75" r="5" />
+				<circle cx="37" cy="37" r="5" />
+				<circle cx="37" cy="50" r="5" />
+				<circle cx="37" cy="62" r="5" />
+				<circle cx="62" cy="37" r="5" />
+				<circle cx="62" cy="50" r="5" />
+				<circle cx="62" cy="62" r="5" />
+				<circle cx="75" cy="25" r="5" />
+				<circle cx="75" cy="37" r="5" />
+				<circle cx="75" cy="50" r="5" />
+				<circle cx="75" cy="62" r="5" />
+				<circle cx="75" cy="75" r="5" />
+			</g>`
+			: die === 17 ?
+			`<g>
+				<circle cx="25" cy="25" r="5" />
+				<circle cx="25" cy="37" r="5" />
+				<circle cx="25" cy="50" r="5" />
+				<circle cx="25" cy="62" r="5" />
+				<circle cx="25" cy="75" r="5" />
+				<circle cx="37" cy="37" r="5" />
+				<circle cx="37" cy="50" r="5" />
+				<circle cx="37" cy="62" r="5" />
+				<circle cx="50" cy="50" r="5" />
+				<circle cx="62" cy="37" r="5" />
+				<circle cx="62" cy="50" r="5" />
+				<circle cx="62" cy="62" r="5" />
+				<circle cx="75" cy="25" r="5" />
+				<circle cx="75" cy="37" r="5" />
+				<circle cx="75" cy="50" r="5" />
+				<circle cx="75" cy="62" r="5" />
+				<circle cx="75" cy="75" r="5" />
+			</g>`
+			: die === 18 ?
+			`<g>
+				<circle cx="25" cy="25" r="5" />
+				<circle cx="25" cy="37" r="5" />
+				<circle cx="25" cy="50" r="5" />
+				<circle cx="25" cy="62" r="5" />
+				<circle cx="25" cy="75" r="5" />
+				<circle cx="37" cy="37" r="5" />
+				<circle cx="37" cy="50" r="5" />
+				<circle cx="37" cy="62" r="5" />
+				<circle cx="50" cy="37" r="5" />
+				<circle cx="50" cy="62" r="5" />
+				<circle cx="62" cy="37" r="5" />
+				<circle cx="62" cy="50" r="5" />
+				<circle cx="62" cy="62" r="5" />
+				<circle cx="75" cy="25" r="5" />
+				<circle cx="75" cy="37" r="5" />
+				<circle cx="75" cy="50" r="5" />
+				<circle cx="75" cy="62" r="5" />
+				<circle cx="75" cy="75" r="5" />
+			</g>`
+			: die === 19 ?
+			`<g>
+				<circle cx="25" cy="25" r="5" />
+				<circle cx="25" cy="37" r="5" />
+				<circle cx="25" cy="50" r="5" />
+				<circle cx="25" cy="62" r="5" />
+				<circle cx="25" cy="75" r="5" />
+				<circle cx="37" cy="37" r="5" />
+				<circle cx="37" cy="50" r="5" />
+				<circle cx="37" cy="62" r="5" />
+				<circle cx="50" cy="37" r="5" />
+				<circle cx="50" cy="50" r="5" />
+				<circle cx="50" cy="62" r="5" />
+				<circle cx="62" cy="37" r="5" />
+				<circle cx="62" cy="50" r="5" />
+				<circle cx="62" cy="62" r="5" />
+				<circle cx="75" cy="25" r="5" />
+				<circle cx="75" cy="37" r="5" />
+				<circle cx="75" cy="50" r="5" />
+				<circle cx="75" cy="62" r="5" />
+				<circle cx="75" cy="75" r="5" />
+			</g>`
+			: die === 20 ?
+			`<g>
+				<circle cx="25" cy="25" r="5" />
+				<circle cx="25" cy="37" r="5" />
+				<circle cx="25" cy="50" r="5" />
+				<circle cx="25" cy="62" r="5" />
+				<circle cx="25" cy="75" r="5" />
+				<circle cx="37" cy="25" r="5" />
+				<circle cx="37" cy="37" r="5" />
+				<circle cx="37" cy="50" r="5" />
+				<circle cx="37" cy="62" r="5" />
+				<circle cx="37" cy="75" r="5" />
+				<circle cx="62" cy="25" r="5" />
+				<circle cx="62" cy="37" r="5" />
+				<circle cx="62" cy="50" r="5" />
+				<circle cx="62" cy="62" r="5" />
+				<circle cx="62" cy="75" r="5" />
+				<circle cx="75" cy="25" r="5" />
+				<circle cx="75" cy="37" r="5" />
+				<circle cx="75" cy="50" r="5" />
+				<circle cx="75" cy="62" r="5" />
+				<circle cx="75" cy="75" r="5" />
+			</g>`
+			: `<text x="50" y="50">${die}</text>`)
 			+
 		`</svg>`
 	)
