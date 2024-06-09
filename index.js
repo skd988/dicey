@@ -454,7 +454,7 @@ document.addEventListener('DOMContentLoaded', event => {
 	{
 		const result = Dice.roll(diceResults);
 		pushToHistory(result);
-		Dice.modifyProbabilities(diceResults, result.outcome, modifier);
+		diceResults = Dice.modifyProbabilities(diceResults, result.outcome, modifier);
 		displayLastResult();
 		updateProbabilityDisplay();
 		updateHistoryDistributionDisplay();	
