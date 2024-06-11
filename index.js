@@ -542,14 +542,15 @@ document.addEventListener('DOMContentLoaded', event => {
 	
 	document.addEventListener('keydown', e => 
 	{
-		if (e.key === ' ' || e.key === '\n')
+		const key = String.fromCharCode(e.which);
+		if (key === ' ' || key === '\n')
 		{
 			e.preventDefault();
 			roll();
 		}
-		else if (e.key === 'u')
+		else if (key === 'U')
 			unroll();
-		else if (e.key === 'r')
+		else if (key === 'R')
 			initialize();
 	});
 	
