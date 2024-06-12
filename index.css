@@ -14,7 +14,7 @@
 }
 
 .hidden{
-	display: none;
+	visibility: hidden;
 }
 
 .range-input{
@@ -70,6 +70,15 @@ button:hover{
 
 #stats{
 	flex-basis: 40%;
+}
+
+
+#history-distribution{
+	min-width: 250px;
+}
+
+#probabilities{
+	min-width: 250px;
 }
 
 .die {
