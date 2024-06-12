@@ -48,15 +48,10 @@ button:hover{
 }
 
 #result{
+	display: flex;
 	margin: auto;
 	font-weight: bold;
 	font-size: 1.2rem;
-	/* position: absolute; */
-	/* height: 100px; */
-	/* top: calc(50% - 50px); */
-	/* width: 100px; */
-	/* left: calc(47.33% - 50px); */
-	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-wrap: wrap;
@@ -70,18 +65,16 @@ button:hover{
 
 #rolling{
 	text-align: center;
-	flex-basis: 50%;
+	flex-basis: 40%;
 }
 
 #stats{
-	flex-basis: 30%;
+	flex-basis: 40%;
 }
-
 
 .die {
 	height: 100px;
 	width: 100px;
-	/* margin: 3px; */
 }
 
 .die rect {

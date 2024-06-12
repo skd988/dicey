@@ -25,29 +25,37 @@
 		<div id="rolling">
 			<button id="roll-button">roll!</button>
 			<button id="unroll-button">unroll</button>
-			<h5>Display by dice:</h5>
+			<br>
+			<br>
 			<input type="checkbox" id="display-by-dice" checked>
+			<h5 class="inline">Display by dice</h5>
 			<h1>Result:</h1>
 			<div id="result"></div>
 		</div>
 		<div id="stats">
-			<h5>By sum:</h5>
 			<input type="checkbox" id="by-sum-checkbox" checked>
-			<h3>History distributions</h3>
+			<h5 class="inline">By sum</h5>
 			<h5>Number of rolls: </h5>
 			<p id="num-of-rolls">0</p>
-			<h5>Hide history:</h5>
-			<input type="checkbox" id="hide-history-checkbox">
-			<div id="history-distribution" class="flex-container">
-				<ul></ul>
-				<ul></ul>
-			</div>
-			<h3>Probabilities:</h3>
-			<h5>Hide probabilities:</h5>
-			<input type="checkbox" id="hide-probabilities-checkbox">
-			<div id="probabilities" class="flex-container">
-				<ul></ul>
-				<ul></ul>
+			<div class="flex-container">
+				<div>
+					<h3>History distributions</h3>
+					<input type="checkbox" id="hide-history-checkbox">
+					<h5 class="inline">Hide history</h5>
+					<div id="history-distribution" class="flex-container">
+						<ul></ul>
+						<ul></ul>
+					</div>
+				</div>
+				<div>
+					<h3>Probabilities:</h3>
+					<input type="checkbox" id="hide-probabilities-checkbox">
+					<h5 class="inline">Hide probabilities</h5>
+					<div id="probabilities" class="flex-container">
+						<ul></ul>
+						<ul></ul>
+					</div>
+				</div>
 			</div>
 			<h3>History:</h3>
 			<ul id="history"></ul>
