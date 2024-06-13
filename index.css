@@ -36,7 +36,7 @@ button{
 	border-style: solid;
 	background-color: #3830df;
 	color: white;
-	padding: 10px;
+	padding: 0.625rem;
 	font-size: 1.2rem;
 	border-radius: 50%;
 	transition-duration: 0.4s;
@@ -45,6 +45,10 @@ button{
 button:hover{
 	background-color: #60df30;
 	cursor: pointer;
+}
+
+.gap{
+	gap: 3rem;
 }
 
 #result{
@@ -72,13 +76,15 @@ button:hover{
 	flex-basis: 40%;
 }
 
-
-#history-distribution{
-	min-width: 250px;
+#history{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 0.625rem;
 }
 
-#probabilities{
-	min-width: 250px;
+#history > li{
+	min-width: 5rem;
 }
 
 .die {

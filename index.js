@@ -314,6 +314,7 @@ document.addEventListener('DOMContentLoaded', event => {
 	const historyDistributionElement = document.getElementById('history-distribution');
 	const resultDisplayByDiceCheckboxElement = document.getElementById('display-by-dice');
 	const bySumCheckboxElement = document.getElementById('by-sum-checkbox');
+	const distributionCheckboxElement = document.getElementById('hide-distribution-checkbox');
 	const historyCheckboxElement = document.getElementById('hide-history-checkbox');
 	const probabilitiesCheckboxElement = document.getElementById('hide-probabilities-checkbox');
 	const diceInputElement = document.getElementById('dice-input');
@@ -333,6 +334,7 @@ document.addEventListener('DOMContentLoaded', event => {
 	let numOfDice = parseInt(diceInputElement?.value);
 	let faces = parseInt(facesInputElement?.value);
 	let bySum = bySumCheckboxElement?.checked;
+	let distributionVisible = distributionCheckboxElement?.checked;
 	let historyVisible = historyCheckboxElement?.checked;
 	let probabilitiesVisible = probabilitiesCheckboxElement?.checked;
 	let displayByDice = resultDisplayByDiceCheckboxElement?.checked;
@@ -369,7 +371,7 @@ document.addEventListener('DOMContentLoaded', event => {
 	const initialize = () => 
 	{
 		diceResults = Dice.initNewDiceResults(faces, numOfDice);
-		if(historyCheckboxElement.checked)
+		if(distributionCheckboxElement.checked)
 			historyDistributionElement?.classList.add("hidden");
 		
 		if(probabilitiesCheckboxElement.checked)
@@ -499,10 +501,16 @@ document.addEventListener('DOMContentLoaded', event => {
 		newHistoryDistributionDisplay();
 	});
 	
+	distributionCheckboxElement?.addEventListener('input', e => 
+	{
+		distributionVisible = distributionCheckboxElement?.checked;
+		historyDistributionElement?.classList.toggle("hidden");
+	});
+	
 	historyCheckboxElement?.addEventListener('input', e => 
 	{
-		historyVisible = historyCheckboxElement?.checked;
-		historyDistributionElement?.classList.toggle("hidden");
+		historyVisible = distributionCheckboxElement?.checked;
+		historyListElement?.classList.toggle("hidden");
 	});
 	
 	probabilitiesCheckboxElement?.addEventListener('input', e => 
