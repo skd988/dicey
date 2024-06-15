@@ -311,10 +311,10 @@ const diceDisplay = (result) => {
 document.addEventListener('DOMContentLoaded', event => {
 	const probabilityDisplayElement = document.getElementById('probabilities');
 	const historyListElement = document.getElementById('history');
-	const historyDistributionElement = document.getElementById('history-distribution');
+	const histogramElement = document.getElementById('histogram');
 	const resultDisplayByDiceCheckboxElement = document.getElementById('display-by-dice');
 	const bySumCheckboxElement = document.getElementById('by-sum-checkbox');
-	const distributionCheckboxElement = document.getElementById('hide-distribution-checkbox');
+	const histogramCheckboxElement = document.getElementById('hide-histogram-checkbox');
 	const historyCheckboxElement = document.getElementById('hide-history-checkbox');
 	const probabilitiesCheckboxElement = document.getElementById('hide-probabilities-checkbox');
 	const diceInputElement = document.getElementById('dice-input');
@@ -328,13 +328,13 @@ document.addEventListener('DOMContentLoaded', event => {
 	
 	let diceResults;
 	let history;
-	let historyDistribution;
-	let historyDistributionBySum;
+	let histogram;
+	let histogramBySum;
 	let probs;
 	let numOfDice = parseInt(diceInputElement?.value);
 	let faces = parseInt(facesInputElement?.value);
 	let bySum = bySumCheckboxElement?.checked;
-	let distributionVisible = distributionCheckboxElement?.checked;
+	let histogramVisible = histogramCheckboxElement?.checked;
 	let historyVisible = historyCheckboxElement?.checked;
 	let probabilitiesVisible = probabilitiesCheckboxElement?.checked;
 	let displayByDice = resultDisplayByDiceCheckboxElement?.checked;
@@ -347,8 +347,8 @@ document.addEventListener('DOMContentLoaded', event => {
 	const pushToHistory = result => {
 		history.push(result.outcome);
 		numOfRollsElement.textContent = history.length;
-		historyDistributionBySum[sum(result.outcome)] += 1;
-		historyDistribution[result.outcome] += 1;
+		histogramBySum[sum(result.outcome)] += 1;
+		histogram[result.outcome] += 1;
 
 		historyListElement.insertBefore(createElementFromHtml(
 			`<li>
@@ -360,8 +360,8 @@ document.addEventListener('DOMContentLoaded', event => {
 	const popFromHistory = () => {
 		const lastRollOutcome = history.pop();
 		numOfRollsElement.textContent = history.length;
-		historyDistributionBySum[sum(lastRollOutcome)] -= 1;
-		historyDistribution[lastRollOutcome] -= 1;
+		histogramBySum[sum(lastRollOutcome)] -= 1;
+		histogram[lastRollOutcome] -= 1;
 
 		historyListElement.removeChild(historyListElement.firstElementChild);
 
@@ -371,28 +371,28 @@ document.addEventListener('DOMContentLoaded', event => {
 	const initialize = () => 
 	{
 		diceResults = Dice.initNewDiceResults(faces, numOfDice);
-		if(distributionCheckboxElement.checked)
-			historyDistributionElement?.classList.add("hidden");
+		if(histogramCheckboxElement.checked)
+			histogramElement?.classList.add("hidden");
 		
 		if(probabilitiesCheckboxElement.checked)
 			probabilityDisplayElement?.classList.add("hidden");
 
 		history = [];
-		historyDistributionBySum = Object.fromEntries((diceResults.map(res => sum(res.outcome))).map(sum => [sum, 0]));
-		historyDistribution = Object.fromEntries(diceResults.map(res => [res.outcome, 0]));
-		newHistoryDistributionDisplay();
+		histogramBySum = Object.fromEntries((diceResults.map(res => sum(res.outcome))).map(sum => [sum, 0]));
+		histogram = Object.fromEntries(diceResults.map(res => [res.outcome, 0]));
+		newHistogramDisplay();
 		newProbabilityDisplay();
 		historyListElement.textContent = '';
 		resultElement.textContent = '';
 		numOfRollsElement.textContent = 0;
 	};
 
-	const newHistoryDistributionDisplay = () =>
+	const newHistogramDisplay = () =>
 	{
-		const distribution = bySum? historyDistributionBySum : historyDistribution;
+		const histogramToDisplay = bySum? histogramBySum : histogram;
 		const newDisplayStats = document.createElement('template');
 		const newDisplayBar = document.createElement('template');
-		Object.entries(distribution).forEach(([outcome, numOfRolls]) => 
+		Object.entries(histogramToDisplay).forEach(([outcome, numOfRolls]) => 
 		{
 			newDisplayStats.innerHTML +=
 			`<li>
@@ -404,17 +404,17 @@ document.addEventListener('DOMContentLoaded', event => {
 				<progress></progress>
 			</li>`;
 		});
-		historyDistributionElement.children[0].innerHTML = newDisplayStats.innerHTML;
-		historyDistributionElement.children[1].innerHTML = newDisplayBar.innerHTML;
-		updateHistoryDistributionDisplay();
+		histogramElement.children[0].innerHTML = newDisplayStats.innerHTML;
+		histogramElement.children[1].innerHTML = newDisplayBar.innerHTML;
+		updateHistogramDisplay();
 	}
 	
-	const updateHistoryDistributionDisplay = () => 
+	const updateHistogramDisplay = () => 
 	{
-		const distribution = bySum? historyDistributionBySum : historyDistribution;
-		Object.entries(distribution).forEach(([outcome, numOfRolls], index) => {
-			const numOfRollsDisplay = historyDistributionElement.children[0].children[index].children[1];
-			const progressDisplay = historyDistributionElement.children[1].children[index].children[0];
+		const histogramToDisplay = bySum? histogramBySum : histogram;
+		Object.entries(histogramToDisplay).forEach(([outcome, numOfRolls], index) => {
+			const numOfRollsDisplay = histogramElement.children[0].children[index].children[1];
+			const progressDisplay = histogramElement.children[1].children[index].children[0];
 			numOfRollsDisplay.innerText = numOfRolls;
 			progressDisplay.max = history.length;
 			progressDisplay.value = numOfRolls;
@@ -459,7 +459,7 @@ document.addEventListener('DOMContentLoaded', event => {
 		diceResults = Dice.modifyProbabilities(diceResults, result.outcome, modifier);
 		displayLastResult();
 		updateProbabilityDisplay();
-		updateHistoryDistributionDisplay();	
+		updateHistogramDisplay();	
 	};
 	
 	const displayLastResult = () => 
@@ -484,7 +484,7 @@ document.addEventListener('DOMContentLoaded', event => {
 		{
 			diceResults = Dice.modifyProbabilities(diceResults, popFromHistory(), modifier, {cancelLastRoll: true});
 			updateProbabilityDisplay();
-			updateHistoryDistributionDisplay();
+			updateHistogramDisplay();
 			if (history.length > 0)
 				displayLastResult();
 			else
@@ -498,18 +498,18 @@ document.addEventListener('DOMContentLoaded', event => {
 	{
 		bySum = bySumCheckboxElement?.checked;
 		newProbabilityDisplay();
-		newHistoryDistributionDisplay();
+		newHistogramDisplay();
 	});
 	
-	distributionCheckboxElement?.addEventListener('input', e => 
+	histogramCheckboxElement?.addEventListener('input', e => 
 	{
-		distributionVisible = distributionCheckboxElement?.checked;
-		historyDistributionElement?.classList.toggle("hidden");
+		histogramVisible = histogramCheckboxElement?.checked;
+		histogramElement?.classList.toggle("hidden");
 	});
 	
 	historyCheckboxElement?.addEventListener('input', e => 
 	{
-		historyVisible = distributionCheckboxElement?.checked;
+		historyVisible = historyCheckboxElement?.checked;
 		historyListElement?.classList.toggle("hidden");
 	});
 	

@@ -12,7 +12,7 @@
 	<div class="flex-container">
 		<div id="menu">
 			<h1>Menu</h1>
-			<button id="reset-button">reset</button>
+			<button id="reset-button">Reset</button>
 			<h3 class="center-text">Number of dice</h3>
 			<p id="dice-value" class="parameter-value"></p>
 			<input type="range" id="dice-input" class="range-input" value="2" min="1" max="5">
@@ -24,43 +24,50 @@
 			<input type="range" id="modifier-input" class="range-input" value="2" min="1" max="20" step="0.1">
 		</div>
 		<div id="rolling">
-			<button id="roll-button">roll!</button>
-			<button id="unroll-button">unroll</button>
-			<br>
-			<br>
+			<h1>Result</h1>
 			<input type="checkbox" id="display-by-dice" checked>
-			<h5 class="inline">Display by dice</h5>
-			<h1>Result:</h1>
+			<label for="display-by-dice">Display by dice</label>
 			<div id="result"></div>
+			<button id="roll-button">Roll!</button>
+			<br>
+			<br>
+			<button id="unroll-button">Unroll</button>
 		</div>
 		<div id="stats">
-			<input type="checkbox" id="by-sum-checkbox" checked>
-			<h5 class="inline">By sum</h5>
-			<h5>Number of rolls: </h5>
-			<p id="num-of-rolls">0</p>
-			<div class="flex-container">
+			<div class="center">
+				<h1>Stats</h1>
+				<input type="checkbox" id="by-sum-checkbox" checked>
+				<label for="by-sum-checkbox">By sum</label>
+			</div>
+			<div class="flex-container flex-even-split-two">
+				<h3>Histogram</h3>
+				<h3>Probabilities</h3>				
+			</div>
+			<div class="flex-container flex-even-split-two">
 				<div>
-					<h3>History distribution</h3>
-					<input type="checkbox" id="hide-distribution-checkbox">
-					<h5 class="inline">Hide distribution</h5>
-					<div id="history-distribution" class="flex-container gap">
+					<input type="checkbox" id="hide-histogram-checkbox">
+					<label for="hide-histogram-checkbox">Hide</label>
+					<div id="histogram" class="flex-container bars-display">
 						<ul></ul>
 						<ul></ul>
 					</div>
 				</div>
 				<div>
-					<h3>Probabilities:</h3>
 					<input type="checkbox" id="hide-probabilities-checkbox">
-					<h5 class="inline">Hide probabilities</h5>
-					<div id="probabilities" class="flex-container gap">
+					<label for="hide-probabilities-checkbox">Hide</label>
+					<div id="probabilities" class="flex-container bars-display">
 						<ul></ul>
 						<ul></ul>
 					</div>
 				</div>
 			</div>
-			<h3>History:</h3>
+			<h3>History</h3>
+			<h5 class="inline">Number of rolls: </h5>
+			<p class="inline" id="num-of-rolls">0</p>
+			<br>
+			<br>
 			<input type="checkbox" id="hide-history-checkbox">
-			<h5 class="inline">Hide history</h5>
+			<label for="hide-history-checkbox">Hide</label>
 			<ul id="history"></ul>
 		</div>
 	</div>

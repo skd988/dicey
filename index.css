@@ -1,8 +1,68 @@
+#result{
+	display: flex;
+	margin: auto;
+	font-weight: bold;
+	font-size: 3rem;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	flex-direction: row;
+	min-height: 15rem;
+}
+
+#menu{
+	text-align: center;
+	flex-basis: 20%;
+}
+
+#rolling{
+	text-align: center;
+	flex-basis: 35%;
+}
+
+#stats{
+	flex-basis: 45%;
+}
+
+#history{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 0.625rem;
+}
+
+#history > li{
+	min-width: 5rem;
+}
+
+#roll-button{
+	border-radius: 100%;
+	background-color: red;
+	aspect-ratio : 1 / 1;
+	font-size: 2rem;
+}
+
+#roll-button:hover{
+	background-color:  #f56161;
+}
+
 .flex-container{
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	justify-content: space-between;
+	justify-content: start;
+}
+
+.flex-even-split-two > *{
+	flex-basis: 50%;
+}
+
+.bars-display ul:first-child{
+	flex-basis: 25%;
+}
+
+.bars-display ul:nth-child(2){
+	flex-basis: 75%;
 }
 
 .inline{
@@ -14,7 +74,7 @@
 }
 
 .hidden{
-	visibility: hidden;
+	display: none !important;
 }
 
 .range-input{
@@ -24,6 +84,25 @@
 .parameter-value{
 	font-weight: bold;
 	font-size: 1.2rem
+}
+
+.gap{
+	gap: 3rem;
+}
+
+.center{
+	text-align: center;
+}
+
+.die {
+	height: 100px;
+	width: 100px;
+}
+
+.die rect {
+	stroke-width: 4px;
+	stroke: black;
+	fill: white;
 }
 
 ul {
@@ -43,57 +122,6 @@ button{
 }
 
 button:hover{
-	background-color: #60df30;
+	background-color: #6470fe;
 	cursor: pointer;
-}
-
-.gap{
-	gap: 3rem;
-}
-
-#result{
-	display: flex;
-	margin: auto;
-	font-weight: bold;
-	font-size: 1.2rem;
-	justify-content: center;
-	align-items: center;
-	flex-wrap: wrap;
-	flex-direction: row;
-}
-
-#menu{
-	text-align: center;
-	flex-basis: 20%;
-}
-
-#rolling{
-	text-align: center;
-	flex-basis: 40%;
-}
-
-#stats{
-	flex-basis: 40%;
-}
-
-#history{
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	gap: 0.625rem;
-}
-
-#history > li{
-	min-width: 5rem;
-}
-
-.die {
-	height: 100px;
-	width: 100px;
-}
-
-.die rect {
-	stroke-width: 4px;
-	stroke: black;
-	fill: white;
 }
