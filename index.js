@@ -522,7 +522,8 @@ document.addEventListener('DOMContentLoaded', event => {
 	resultDisplayByDiceCheckboxElement?.addEventListener('input', e => 
 	{
 		displayByDice = resultDisplayByDiceCheckboxElement?.checked;
-		displayLastResult();
+		if (history.length)
+			displayLastResult();
 	});
 	
 	diceInputElement?.addEventListener('input', e => 
