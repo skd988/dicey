@@ -552,7 +552,7 @@ document.addEventListener('DOMContentLoaded', event => {
 	document.addEventListener('keydown', e => 
 	{
 		const key = String.fromCharCode(e.which);
-		if (key === ' ' || key === '\n')
+		if (key === ' ' || key === '\r')
 		{
 			e.preventDefault();
 			roll();
