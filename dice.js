@@ -33,14 +33,14 @@ const initNewDiceResults = (faces, numOfDice) =>
 const modifyProbabilities = (diceResults, lastRollOutcome, modifier, {cancelLastRoll} = {cancelLastRoll: false}) =>
 {
 	let distributedValue = diceResults.find(res => res.outcome === lastRollOutcome).prob * 
-							(modifier - 1) / (modifier * (diceResults.length - 1));
+							(1 - modifier) / (diceResults.length - 1);
 	if (cancelLastRoll)
-		distributedValue *= modifier;
+		distributedValue /= modifier;
 	return diceResults.reduce((newDiceResults, result, index) =>
 	{
 		const newProb = cancelLastRoll?
-			result.outcome === lastRollOutcome? result.prob * modifier : result.prob - distributedValue :
-			result.outcome === lastRollOutcome? result.prob / modifier : result.prob + distributedValue;
+			result.outcome === lastRollOutcome? result.prob / modifier : result.prob - distributedValue :
+			result.outcome === lastRollOutcome? result.prob * modifier : result.prob + distributedValue;
 		newDiceResults.push(
 		{
 			...result, 
