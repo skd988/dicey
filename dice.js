@@ -30,17 +30,11 @@ const initNewDiceResults = (faces, numOfDice) =>
 	, []);
 };
 
-const modifyProbabilities = (diceResults, lastRollOutcome, modifier, {cancelLastRoll} = {cancelLastRoll: false}) =>
+const normalizeProbabilities = diceResults => 
 {
-	let distributedValue = diceResults.find(res => res.outcome === lastRollOutcome).prob * 
-							(1 - modifier) / (diceResults.length - 1);
-	if (cancelLastRoll)
-		distributedValue /= modifier;
 	return diceResults.reduce((newDiceResults, result, index) =>
 	{
-		const newProb = cancelLastRoll?
-			result.outcome === lastRollOutcome? result.prob / modifier : result.prob - distributedValue :
-			result.outcome === lastRollOutcome? result.prob * modifier : result.prob + distributedValue;
+		const newProb = result.prob / diceResults[diceResults.length - 1].probSum;
 		newDiceResults.push(
 		{
 			...result, 
@@ -49,6 +43,22 @@ const modifyProbabilities = (diceResults, lastRollOutcome, modifier, {cancelLast
 		});
 		return newDiceResults;
 	}, []);
+}
+
+const modifyProbabilities = (diceResults, lastRollOutcome, modifier, {cancelLastRoll} = {cancelLastRoll: false}) =>
+{
+	return normalizeProbabilities(diceResults.reduce((newDiceResults, result, index) =>
+	{
+		const newProb = result.outcome !== lastRollOutcome? result.prob : 
+					(cancelLastRoll? result.prob / modifier : result.prob * modifier);
+		newDiceResults.push(
+		{
+			...result, 
+			prob: newProb,
+			probSum: newProb + (!index? 0 : newDiceResults[index - 1].probSum)
+		});
+		return newDiceResults;
+	}, []));
 };
 
 const roll = (diceResults, rand = Math.random()) =>
@@ -62,4 +72,4 @@ const getTotalProbSum = diceResults =>
 	return diceResults[diceResults.length - 1].probSum;
 };
 
-export default { initNewDiceResults, roll, modifyProbabilities };
+export default { initNewDiceResults, roll, modifyProbabilities, normalizeProbabilities };
