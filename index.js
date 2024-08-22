@@ -28,7 +28,8 @@ const createElementFromHtml = htmlString =>
 	return elem.content;
 };
 
-const diceDisplay = (result) => {
+const diceDisplay = (result) => 
+{
 	return result.map(die => createElementFromHtml(
 		`<svg viewBox="0 0 100 100" class="die">
 			<rect x="15" y="15" height="70" width="70" rx="12"></rect>`
@@ -326,6 +327,9 @@ document.addEventListener('DOMContentLoaded', event => {
 	const resultElement = document.getElementById('result');
 	const numOfRollsElement = document.getElementById('num-of-rolls');
 	
+	const holdDelay = 500;
+	const holdInterval = 10;
+	
 	let diceResults;
 	let history;
 	let histogram;
@@ -547,8 +551,37 @@ document.addEventListener('DOMContentLoaded', event => {
 		initialize();
 	});
 	
-	document.getElementById('roll-button')?.addEventListener('click', roll);
+	let holdIntervalId = 0;
+	let holdTimeoutId = 0;
 	
+	document.getElementById('roll-button')?.addEventListener('mousedown', e => 
+	{
+		if (e.buttons !== 1)
+			return;
+		roll();
+		holdIntervalId = setTimeout(() => {
+			holdTimeoutId = setInterval(roll, holdInterval)			
+		}, holdDelay);
+	});
+
+	document.getElementById('roll-button')?.addEventListener('mouseup', e => clearTimeout(holdTimeoutId) || clearInterval(holdIntervalId));
+	
+	document.getElementById('roll-button')?.addEventListener('mouseleave', e => clearTimeout(holdTimeoutId) || clearInterval(holdIntervalId));
+	
+	document.getElementById('unroll-button')?.addEventListener('mousedown', e => 
+	{
+		if (e.buttons !== 1)
+			return;
+		unroll();
+		holdIntervalId = setTimeout(() => {
+			holdTimeoutId = setInterval(unroll, holdInterval)			
+		}, holdDelay);
+	});
+	
+	document.getElementById('unroll-button')?.addEventListener('mouseup', e => clearTimeout(holdTimeoutId) || clearInterval(holdIntervalId));
+	
+	document.getElementById('unroll-button')?.addEventListener('mouseleave', e => clearTimeout(holdTimeoutId) || clearInterval(holdIntervalId));
+
 	document.addEventListener('keydown', e => 
 	{
 		const key = String.fromCharCode(e.which);
@@ -567,6 +600,4 @@ document.addEventListener('DOMContentLoaded', event => {
 	{
 		initialize();
 	});
-	
-	document.getElementById('unroll-button')?.addEventListener('click', unroll);
 });
